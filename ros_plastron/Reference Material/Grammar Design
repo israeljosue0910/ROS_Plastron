@@ -1,0 +1,60 @@
+Grammar for ROS-Plastron Draft:
+
+expr            ::= DEF
+                    | VAR_MOD
+                    | FUNC
+
+
+DEF             ::= NAME EQUAL STRING_LITERAL
+                    | NAME EQUAL INT
+                    | NAME EQUAL CHAR_LITERAL
+                    | NAME EQUAL NAME
+                    | NAME EQUAL FUNC
+                    | NAME EQUAL NAME DOT MOD
+
+VAR_MOD         ::= NAME DOT MOD
+
+FUNC            ::= PRIM_F PAREN
+
+MOD             ::= PRIM_M PAREN
+
+PAREN           ::= LEFT_P STRING_LITERAL RIGHT_P
+                    | LEFT_P MESSAGE_TYPE COMMA STRING_LITERAL RIGHT_P
+                    | LEFT_P NAME COMMA STRING_LITERAL RIGHT_P
+                    | LEFT_P STRING_LITERAL COMMA COMMUNICATION COMMA ROLE RIGHT_P
+                    | LEFT_P EMPTY RIGHT_P
+
+PRIM_F          ::=  CREATE_NODE
+                    | CREATE_MSGS
+                    | LOAD
+                    | GENERATE_LAUNCH
+                    | CREATE_NODELET
+
+PRIM_M          ::= PUBLISH
+                    | SUBSCRIBE
+                    | UNSUBSCRIBE
+                    | SERVICE
+                    | CLIENT
+
+COMMUNICATION   ::= message_pass | service
+
+MESSAGE_TYPE    ::= geometry_msgs/Pose
+                    | geometry_msgs/Point
+                    | geometry_msgs/Quaternion
+                    | geometry_msgs/Twist
+                    | geometry_msgs/Vector3
+                    | nav_msgs/Path
+                    | nav_msgs/GetMap
+                    | nav_msgs/OccupancyGrid
+                    | sensor_msgs/Image
+                    | sensor_msgs/Temperature
+                    | sensor_msgs/LaserScan
+                    | sensor_msgs/Imu
+                    | std_msgs/Char
+                    | std_msgs/Int32
+                    | std_msgs/String
+                    | std_msgs/Float32
+
+ROLE    ::= client | server | publisher | subscriber
+
+
