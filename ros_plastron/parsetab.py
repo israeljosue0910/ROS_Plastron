@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CHAR_LITERAL CLIENT COMMA CREATE_MSGS CREATE_NODE CREATE_NODELET DOT EMPTY EQUALS GENERATE_LAUNCH INT LEFT_P LOAD NAME NODE NODELET PUBLISH RIGHT_P SERVER SERVICE STRING_LITERAL SUBSCRIBE SUBSCRIBER UNSUBSCRIBE\n    def : NAME EQUALS STRING_LITERAL\n        | NAME EQUALS INT\n        | NAME EQUALS CHAR_LITERAL\n        | NAME EQUALS NAME\n        | NAME EQUALS func\n        | NAME EQUALS NAME DOT mod\n    \n    func  : prim_f paren\n    \n    var_mod  : NAME DOT mod\n    \n    mod  : prim_m paren\n    \n    prim_f  : CREATE_NODE\n            | CREATE_MSGS\n            | LOAD\n            | GENERATE_LAUNCH\n            | CREATE_NODELET\n    \n    exp : def\n        | func\n        | var_mod\n    \n    prim_m  : PUBLISH\n            | SUBSCRIBE\n            | UNSUBSCRIBE\n            | SERVICE\n            | CLIENT\n    \n    paren   : paren1\n            | paren2\n    \n    paren1  : LEFT_P NAME COMMA STRING_LITERAL RIGHT_P\n            | LEFT_P STRING_LITERAL COMMA communication RIGHT_P\n    \n    paren2  : LEFT_P STRING_LITERAL RIGHT_P\n            | LEFT_P EMPTY RIGHT_P\n    \n    communication   : SUBSCRIBER\n                    | SERVER\n    '
+_lr_signature = 'ADDDIAGNOSTICS ADDTWOINTS AND AS CHAR CHAR_LITERAL CLIENT_REQUESTS COMMA COMMANDINT CREATE_CUSTOM_MESSAGE CREATE_MESSAGE CREATE_NODE DEFAULT EMPTY FLOAT32 FROM GENERATE_LAUNCH GENERATE_NODE GETMAP IMU INPUT INT INT32 LOAD MESSAGE_TYPE NAME NODE NODE_VAR NONE OF PATH POINT POSE PROVIDES_SERVICE PUBLISH QUATERNION SELFTEST SERVICE_TYPE SETBOOL SETCAMERAINFO STOP_PUBLISHING STOP_REQUEST STOP_SERVICE STRING STRING_LITERAL SUBSCRIBE TEMPERATURE TO TOPIC_SERVICE TRIGGER TWIST UNSUBSCRIBE VECTOR3 WAYPOINTCLEAR WAYPOINTPULL WITH\n    exp : node_mod\n        | unsub\n        | stop_pub\n        | pub\n        | sub\n        | stop_serv\n        | serv\n        | stop_clnt\n        | clnt\n        | message\n    \n   sub : SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type\n   \n   unsub : UNSUBSCRIBE NAME FROM TOPIC_SERVICE\n   \n   pub : NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type\n   \n   stop_pub : NAME STOP_PUBLISHING TO TOPIC_SERVICE\n   \n   serv : NAME PROVIDES_SERVICE TOPIC_SERVICE OF SERVICE_TYPE serv_type\n   \n   stop_serv : NAME STOP_SERVICE TOPIC_SERVICE\n   \n   clnt : NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params\n   \n   stop_clnt : NAME STOP_REQUEST TOPIC_SERVICE\n   \n   params : NONE\n        | DEFAULT\n        | list\n   \n    list : term\n        | list COMMA term\n    \n    term : INT\n        | STRING_LITERAL\n    \n   node_mod : CREATE_NODE TOPIC_SERVICE AS NAME\n        | LOAD PATH\n        | GENERATE_NODE NAME\n   \n   message : CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list\n   \n   serv_type : ADDTWOINTS\n        | EMPTY\n        | SETBOOL\n        | TRIGGER\n        | WAYPOINTCLEAR\n        | WAYPOINTPULL\n        | COMMANDINT\n        | SETCAMERAINFO\n        | GETMAP\n        | ADDDIAGNOSTICS\n        | SELFTEST\n   \n   sub_type : STRING\n        | POSE\n        | POINT\n        | TWIST\n        | VECTOR3\n        | CHAR\n        | INT32\n        | FLOAT32\n   '
     
-_lr_action_items = {'INT':([3,],[5,]),'SUBSCRIBER':([31,],[37,]),'CREATE_NODELET':([3,],[7,]),'CHAR_LITERAL':([3,],[8,]),'NAME':([0,3,18,],[2,11,22,]),'EQUALS':([2,],[3,]),'UNSUBSCRIBE':([19,],[28,]),'RIGHT_P':([20,21,35,36,37,38,],[30,32,-30,39,-29,40,]),'LEFT_P':([6,7,9,12,13,14,23,24,25,26,28,29,],[18,-14,-11,-12,-13,-10,-18,-21,-19,18,-20,-22,]),'STRING_LITERAL':([3,18,33,],[4,20,38,]),'SUBSCRIBE':([19,],[25,]),'$end':([1,4,5,8,10,11,15,16,17,27,30,32,34,39,40,],[0,-1,-2,-3,-5,-4,-24,-7,-23,-6,-27,-28,-9,-26,-25,]),'CREATE_MSGS':([3,],[9,]),'PUBLISH':([19,],[23,]),'GENERATE_LAUNCH':([3,],[13,]),'SERVER':([31,],[35,]),'CLIENT':([19,],[29,]),'SERVICE':([19,],[24,]),'LOAD':([3,],[12,]),'DOT':([11,],[19,]),'CREATE_NODE':([3,],[14,]),'COMMA':([20,22,],[31,33,]),'EMPTY':([18,],[21,]),}
+_lr_action_items = {'CREATE_NODE':([0,],[12,]),'LOAD':([0,],[14,]),'GENERATE_NODE':([0,],[15,]),'UNSUBSCRIBE':([0,],[16,]),'NAME':([0,15,16,17,18,21,31,],[13,27,28,29,30,33,41,]),'SUBSCRIBE':([0,],[17,]),'CREATE_MESSAGE':([0,],[18,]),'$end':([1,2,3,4,5,6,7,8,9,10,11,26,27,34,36,41,42,46,54,55,56,57,58,59,60,61,63,64,65,66,67,68,69,70,71,72,73,74,80,82,84,85,86,87,88,89,90,91,93,],[0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-27,-28,-16,-18,-26,-14,-12,-41,-42,-43,-44,-45,-46,-47,-48,-15,-30,-31,-32,-33,-34,-35,-36,-37,-38,-39,-40,-11,-13,-29,-22,-24,-25,-17,-19,-20,-21,-23,]),'TOPIC_SERVICE':([12,22,23,24,25,32,38,39,43,],[19,34,35,36,37,42,46,47,49,]),'STOP_PUBLISHING':([13,],[20,]),'PUBLISH':([13,],[21,]),'STOP_SERVICE':([13,],[22,]),'PROVIDES_SERVICE':([13,],[23,]),'STOP_REQUEST':([13,],[24,]),'CLIENT_REQUESTS':([13,],[25,]),'PATH':([14,],[26,]),'AS':([19,],[31,]),'TO':([20,29,33,],[32,39,43,]),'FROM':([28,],[38,]),'OF':([30,35,37,47,49,],[40,44,45,52,62,]),'MESSAGE_TYPE':([40,52,62,],[48,76,78,]),'SERVICE_TYPE':([44,45,],[50,51,]),'STRING':([48,76,78,],[54,54,54,]),'POSE':([48,76,78,],[55,55,55,]),'POINT':([48,76,78,],[56,56,56,]),'TWIST':([48,76,78,],[57,57,57,]),'VECTOR3':([48,76,78,],[58,58,58,]),'CHAR':([48,76,78,],[59,59,59,]),'INT32':([48,76,78,],[60,60,60,]),'FLOAT32':([48,76,78,],[61,61,61,]),'ADDTWOINTS':([50,51,],[64,64,]),'EMPTY':([50,51,],[65,65,]),'SETBOOL':([50,51,],[66,66,]),'TRIGGER':([50,51,],[67,67,]),'WAYPOINTCLEAR':([50,51,],[68,68,]),'WAYPOINTPULL':([50,51,],[69,69,]),'COMMANDINT':([50,51,],[70,70,]),'SETCAMERAINFO':([50,51,],[71,71,]),'GETMAP':([50,51,],[72,72,]),'ADDDIAGNOSTICS':([50,51,],[73,73,]),'SELFTEST':([50,51,],[74,74,]),'AND':([53,54,55,56,57,58,59,60,61,],[77,-41,-42,-43,-44,-45,-46,-47,-48,]),'WITH':([64,65,66,67,68,69,70,71,72,73,74,75,],[-30,-31,-32,-33,-34,-35,-36,-37,-38,-39,-40,79,]),'INPUT':([77,79,],[81,83,]),'INT':([81,83,92,],[86,86,86,]),'STRING_LITERAL':([81,83,92,],[87,87,87,]),'NONE':([83,],[89,]),'DEFAULT':([83,],[90,]),'COMMA':([84,85,86,87,91,93,],[92,-22,-24,-25,92,-23,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'paren2':([6,26,],[15,15,]),'prim_f':([3,],[6,]),'paren':([6,26,],[16,34,]),'communication':([31,],[36,]),'prim_m':([19,],[26,]),'mod':([19,],[27,]),'def':([0,],[1,]),'paren1':([6,26,],[17,17,]),'func':([3,],[10,]),}
+_lr_goto_items = {'exp':([0,],[1,]),'node_mod':([0,],[2,]),'unsub':([0,],[3,]),'stop_pub':([0,],[4,]),'pub':([0,],[5,]),'sub':([0,],[6,]),'stop_serv':([0,],[7,]),'serv':([0,],[8,]),'stop_clnt':([0,],[9,]),'clnt':([0,],[10,]),'message':([0,],[11,]),'sub_type':([48,76,78,],[53,80,82,]),'serv_type':([50,51,],[63,75,]),'list':([81,83,],[84,91,]),'term':([81,83,92,],[85,85,93,]),'params':([83,],[88,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,35 +26,53 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> def","S'",1,None,None,None),
-  ('def -> NAME EQUALS STRING_LITERAL','def',3,'p_def','ros_plastron_parser.py',11),
-  ('def -> NAME EQUALS INT','def',3,'p_def','ros_plastron_parser.py',12),
-  ('def -> NAME EQUALS CHAR_LITERAL','def',3,'p_def','ros_plastron_parser.py',13),
-  ('def -> NAME EQUALS NAME','def',3,'p_def','ros_plastron_parser.py',14),
-  ('def -> NAME EQUALS func','def',3,'p_def','ros_plastron_parser.py',15),
-  ('def -> NAME EQUALS NAME DOT mod','def',5,'p_def','ros_plastron_parser.py',16),
-  ('func -> prim_f paren','func',2,'p_func','ros_plastron_parser.py',22),
-  ('var_mod -> NAME DOT mod','var_mod',3,'p_var_mod','ros_plastron_parser.py',28),
-  ('mod -> prim_m paren','mod',2,'p_mod','ros_plastron_parser.py',34),
-  ('prim_f -> CREATE_NODE','prim_f',1,'p_prim_f','ros_plastron_parser.py',40),
-  ('prim_f -> CREATE_MSGS','prim_f',1,'p_prim_f','ros_plastron_parser.py',41),
-  ('prim_f -> LOAD','prim_f',1,'p_prim_f','ros_plastron_parser.py',42),
-  ('prim_f -> GENERATE_LAUNCH','prim_f',1,'p_prim_f','ros_plastron_parser.py',43),
-  ('prim_f -> CREATE_NODELET','prim_f',1,'p_prim_f','ros_plastron_parser.py',44),
-  ('exp -> def','exp',1,'p_exp','ros_plastron_parser.py',50),
-  ('exp -> func','exp',1,'p_exp','ros_plastron_parser.py',51),
-  ('exp -> var_mod','exp',1,'p_exp','ros_plastron_parser.py',52),
-  ('prim_m -> PUBLISH','prim_m',1,'p_prim_m','ros_plastron_parser.py',58),
-  ('prim_m -> SUBSCRIBE','prim_m',1,'p_prim_m','ros_plastron_parser.py',59),
-  ('prim_m -> UNSUBSCRIBE','prim_m',1,'p_prim_m','ros_plastron_parser.py',60),
-  ('prim_m -> SERVICE','prim_m',1,'p_prim_m','ros_plastron_parser.py',61),
-  ('prim_m -> CLIENT','prim_m',1,'p_prim_m','ros_plastron_parser.py',62),
-  ('paren -> paren1','paren',1,'p_paren','ros_plastron_parser.py',68),
-  ('paren -> paren2','paren',1,'p_paren','ros_plastron_parser.py',69),
-  ('paren1 -> LEFT_P NAME COMMA STRING_LITERAL RIGHT_P','paren1',5,'p_paren1','ros_plastron_parser.py',75),
-  ('paren1 -> LEFT_P STRING_LITERAL COMMA communication RIGHT_P','paren1',5,'p_paren1','ros_plastron_parser.py',76),
-  ('paren2 -> LEFT_P STRING_LITERAL RIGHT_P','paren2',3,'p_paren2','ros_plastron_parser.py',82),
-  ('paren2 -> LEFT_P EMPTY RIGHT_P','paren2',3,'p_paren2','ros_plastron_parser.py',83),
-  ('communication -> SUBSCRIBER','communication',1,'p_communication','ros_plastron_parser.py',89),
-  ('communication -> SERVER','communication',1,'p_communication','ros_plastron_parser.py',90),
+  ("S' -> exp","S'",1,None,None,None),
+  ('exp -> node_mod','exp',1,'p_exp','plastron_parser.py',25),
+  ('exp -> unsub','exp',1,'p_exp','plastron_parser.py',26),
+  ('exp -> stop_pub','exp',1,'p_exp','plastron_parser.py',27),
+  ('exp -> pub','exp',1,'p_exp','plastron_parser.py',28),
+  ('exp -> sub','exp',1,'p_exp','plastron_parser.py',29),
+  ('exp -> stop_serv','exp',1,'p_exp','plastron_parser.py',30),
+  ('exp -> serv','exp',1,'p_exp','plastron_parser.py',31),
+  ('exp -> stop_clnt','exp',1,'p_exp','plastron_parser.py',32),
+  ('exp -> clnt','exp',1,'p_exp','plastron_parser.py',33),
+  ('exp -> message','exp',1,'p_exp','plastron_parser.py',34),
+  ('sub -> SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type','sub',7,'p_sub','plastron_parser.py',49),
+  ('unsub -> UNSUBSCRIBE NAME FROM TOPIC_SERVICE','unsub',4,'p_unsub','plastron_parser.py',67),
+  ('pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type','pub',8,'p_pub','plastron_parser.py',85),
+  ('stop_pub -> NAME STOP_PUBLISHING TO TOPIC_SERVICE','stop_pub',4,'p_stop_pub','plastron_parser.py',108),
+  ('serv -> NAME PROVIDES_SERVICE TOPIC_SERVICE OF SERVICE_TYPE serv_type','serv',6,'p_serv','plastron_parser.py',128),
+  ('stop_serv -> NAME STOP_SERVICE TOPIC_SERVICE','stop_serv',3,'p_stop_serv','plastron_parser.py',146),
+  ('clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params','clnt',9,'p_clnt','plastron_parser.py',164),
+  ('stop_clnt -> NAME STOP_REQUEST TOPIC_SERVICE','stop_clnt',3,'p_stop_clnt','plastron_parser.py',184),
+  ('params -> NONE','params',1,'p_params','plastron_parser.py',204),
+  ('params -> DEFAULT','params',1,'p_params','plastron_parser.py',205),
+  ('params -> list','params',1,'p_params','plastron_parser.py',206),
+  ('list -> term','list',1,'p_list','plastron_parser.py',213),
+  ('list -> list COMMA term','list',3,'p_list','plastron_parser.py',214),
+  ('term -> INT','term',1,'p_term','plastron_parser.py',224),
+  ('term -> STRING_LITERAL','term',1,'p_term','plastron_parser.py',225),
+  ('node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME','node_mod',4,'p_node_mod','plastron_parser.py',232),
+  ('node_mod -> LOAD PATH','node_mod',2,'p_node_mod','plastron_parser.py',233),
+  ('node_mod -> GENERATE_NODE NAME','node_mod',2,'p_node_mod','plastron_parser.py',234),
+  ('message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list','message',8,'p_message','plastron_parser.py',263),
+  ('serv_type -> ADDTWOINTS','serv_type',1,'p_serv_type','plastron_parser.py',278),
+  ('serv_type -> EMPTY','serv_type',1,'p_serv_type','plastron_parser.py',279),
+  ('serv_type -> SETBOOL','serv_type',1,'p_serv_type','plastron_parser.py',280),
+  ('serv_type -> TRIGGER','serv_type',1,'p_serv_type','plastron_parser.py',281),
+  ('serv_type -> WAYPOINTCLEAR','serv_type',1,'p_serv_type','plastron_parser.py',282),
+  ('serv_type -> WAYPOINTPULL','serv_type',1,'p_serv_type','plastron_parser.py',283),
+  ('serv_type -> COMMANDINT','serv_type',1,'p_serv_type','plastron_parser.py',284),
+  ('serv_type -> SETCAMERAINFO','serv_type',1,'p_serv_type','plastron_parser.py',285),
+  ('serv_type -> GETMAP','serv_type',1,'p_serv_type','plastron_parser.py',286),
+  ('serv_type -> ADDDIAGNOSTICS','serv_type',1,'p_serv_type','plastron_parser.py',287),
+  ('serv_type -> SELFTEST','serv_type',1,'p_serv_type','plastron_parser.py',288),
+  ('sub_type -> STRING','sub_type',1,'p_sub_type','plastron_parser.py',295),
+  ('sub_type -> POSE','sub_type',1,'p_sub_type','plastron_parser.py',296),
+  ('sub_type -> POINT','sub_type',1,'p_sub_type','plastron_parser.py',297),
+  ('sub_type -> TWIST','sub_type',1,'p_sub_type','plastron_parser.py',298),
+  ('sub_type -> VECTOR3','sub_type',1,'p_sub_type','plastron_parser.py',299),
+  ('sub_type -> CHAR','sub_type',1,'p_sub_type','plastron_parser.py',300),
+  ('sub_type -> INT32','sub_type',1,'p_sub_type','plastron_parser.py',301),
+  ('sub_type -> FLOAT32','sub_type',1,'p_sub_type','plastron_parser.py',302),
 ]
