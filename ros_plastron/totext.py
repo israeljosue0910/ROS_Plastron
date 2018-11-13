@@ -4,7 +4,7 @@ import_pack = { 'String': 'std_msgs.msg', 'Pose': 'geometry_msgs.msg', 'Point': 
                 'Int32': 'std_msgs.msg', 'Float32': 'std_msgs.msg'}
 
 def to_text(template):
-    f = open(r'C:/Users/israe/Documents/ROS_Plastron/test/out.py', 'w')
+    f = open('out.py', 'w')
     for line in template:
         f.write("%s\n" % line)
     f.close()
