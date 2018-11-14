@@ -2,7 +2,7 @@ import ply.yacc as yacc
 
 from src import plastron_lex
 from src import message_struct
-from src import totext
+from src import generate_sub, generate_pub
 
 
 tokens = plastron_lex.tokens
@@ -35,13 +35,13 @@ def p_exp(p):
     '''
     p[0] = p[1]
 
-    print(str(p[0]))
-    print(node_names)
-    print(subbed_topics)
-    print(keys)
-    print(topic_type)
-    print(str(messages))
-    print(mapped_messages)
+    # print(str(p[0]))
+    # print(node_names)
+    # print(subbed_topics)
+    # print(keys)
+    # print(topic_type)
+    # print(str(messages))
+    # print(mapped_messages)
 
 
 def p_sub(p):
@@ -242,20 +242,27 @@ def p_node_mod(p):  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 keys.append(p[4])
             else:
                 p_error(7)
-    else:
-        p[0] = p[2]
 
-    if str(p[1]) == 'generate_node':
-        list_sub = subbed_topics.get(p[2])
-        name = node_names.get(p[2])
-        subs = totext.create_subscription_line(list_sub, topic_type)
-        import_var = totext.create_import(list_sub, topic_type)
-        if len(list_sub) > 1:
-            parameter = totext.create_param(list_sub)
-            template = totext.create_sub_template2(name, subs, parameter, import_var)
-        else:
-            template = totext.create_sub_template(name, subs, import_var)
-        totext.to_text(template)
+    elif str(p[1]) == 'generate_node':
+        isSub = p[2] in subbed_topics
+        isPub = p[2] in publishing_topics
+        isClient = p[2] in client_requested_serv
+        isServer = p[2] in services
+
+        if isSub and (not isPub) and (not isClient) and (not isServer):
+            generate_sub.generate_sub_node(subbed_topics.get(p[2]), node_names.get(p[2]), topic_type)
+        elif isPub and (not isSub) and (not isClient) and (not isServer):
+            generate_pub.generate_pub_node(publishing_topics.get(p[2]), node_names.get(p[2]), topic_type)
+            # list_sub = subbed_topics.get(p[2])
+            # name = node_names.get(p[2])
+            # subs = generate_sub.create_subscription_line(list_sub, topic_type)
+            # import_var = generate_sub.create_import(list_sub, topic_type)
+            # if len(list_sub) > 1:
+            #     parameter = generate_sub.create_param(list_sub)
+            #     template = generate_sub.create_sub_template2(name, subs, parameter, import_var)
+            # else:
+            #     template = generate_sub.create_sub_template(name, subs, import_var)
+            # generate_sub.to_text(template)
 
 
 def p_message(p):
