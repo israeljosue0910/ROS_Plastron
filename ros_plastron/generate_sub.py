@@ -61,7 +61,6 @@ def create_subscription_line(list_sub, topic_type):
             sub_var = sub_str + str(counter)
             counter += 1
             value = topic_type.get(key)
-            # value = oldvalue.replace("'", "")
             subs = '    ' + sub_var + ' = message_filters.Subscriber(' + key + ', ' + value + ')\n'
             ts_start += sub_var + ', '
             sub_list += subs
@@ -69,7 +68,6 @@ def create_subscription_line(list_sub, topic_type):
         sub_list += ts_start
     else:
         value = topic_type.get(list_sub[0])
-        # value = oldvalue.replace("'", "")
         sub_list = '    ' + sub_str + ' = rospy.Subscriber(' + list_sub[0] + ', ' + value + ', callback)\n'
     return sub_list
 
@@ -95,11 +93,14 @@ def create_import(list_sub, topic_type):
     import_start = 'from '
     import_mid = ' import '
     full_import = ''
+    no_repeat = []
     if len(list_sub) > 1:
         for topic in list_sub:
             type = topic_type.get(topic)
             pack = import_pack.get(type)
-            full_import += import_start + pack + import_mid + type + '\n'
+            if type not in no_repeat:
+                full_import += import_start + pack + import_mid + type + '\n'
+                no_repeat.append(type)
 
     else:
         type = topic_type.get(list_sub[0])

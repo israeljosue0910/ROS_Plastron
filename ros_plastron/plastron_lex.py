@@ -36,10 +36,9 @@ keywords = {
     'create_custom_message': 'CREATE_CUSTOM_MESSAGE',
 
     'String': 'STRING',
-    'Pose': 'POSE',
-    'Point': 'POINT',
     'Quaternion': 'QUATERNION',
-    'Twist': 'TWIST',
+    'Point': 'POINT',
+    'Pose2D': 'POSE2D',
     'Vector3': 'VECTOR3',
     'Temperature': 'TEMPERATURE',
     'Imu': 'IMU',

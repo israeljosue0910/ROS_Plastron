@@ -252,7 +252,9 @@ def p_node_mod(p):  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if isSub and (not isPub) and (not isClient) and (not isServer):
             generate_sub.generate_sub_node(subbed_topics.get(p[2]), node_names.get(p[2]), topic_type)
         elif isPub and (not isSub) and (not isClient) and (not isServer):
-            generate_pub.generate_pub_node(publishing_topics.get(p[2]), node_names.get(p[2]), topic_type)
+            #message_name = mapped_messages.get((p[2], ))
+            generate_pub.generate_pub_node(publishing_topics.get(p[2]), p[2], node_names.get(p[2]), topic_type,
+                                           mapped_messages, messages)
             # list_sub = subbed_topics.get(p[2])
             # name = node_names.get(p[2])
             # subs = generate_sub.create_subscription_line(list_sub, topic_type)
@@ -300,9 +302,9 @@ def p_serv_type(p):
 def p_sub_type(p):
     '''
    sub_type : STRING
-        | POSE
+        | QUATERNION
         | POINT
-        | TWIST
+        | POSE2D
         | VECTOR3
         | CHAR
         | INT32
