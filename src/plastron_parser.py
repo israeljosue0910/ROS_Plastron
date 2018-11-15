@@ -2,7 +2,7 @@ import ply.yacc as yacc
 
 from src import plastron_lex
 from src import message_struct
-from src import generate_sub, generate_pub
+from src import generate_sub, generate_pub, generate_client, generate_server
 
 
 tokens = plastron_lex.tokens
@@ -33,22 +33,14 @@ def p_exp(p):
         | clnt
         | message
     '''
-    p[0] = p[1]
-
-    # print(str(p[0]))
-    # print(node_names)
-    # print(subbed_topics)
-    # print(keys)
-    # print(topic_type)
-    # print(str(messages))
-    # print(mapped_messages)
 
 
 def p_sub(p):
+    # Function that stores the topic that the specified node will be subscribed to and the message type of that topic.
+
     '''
    sub : SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
    '''
-    p[0] = (p[2], p[4], p[7])
 
     if p[2] in keys:
         if p[2] not in subbed_topics:
@@ -63,10 +55,11 @@ def p_sub(p):
 
 
 def p_unsub(p):
+    # Function that unsubscribe the specified node from the specified topic
+
     '''
    unsub : UNSUBSCRIBE NAME FROM TOPIC_SERVICE
    '''
-    p[0] = (p[2], p[4])
 
     if p[2] in keys:
         if p[4] in subbed_topics.get(p[2]):
@@ -81,10 +74,12 @@ def p_unsub(p):
 
 
 def p_pub(p):
+    # Function that stores the topic that a specified node will be publishing to, stores which message it will be
+    # publishing and the message type of the specified topic
+
     '''
    pub : NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
    '''
-    p[0] = (p[1], p[3], p[5], p[8])
 
     if p[1] in keys:
         if p[3] in keys:
@@ -104,10 +99,11 @@ def p_pub(p):
 
 
 def p_stop_pub(p):
+    # Function that stops the specified node from publishing to the specified topic
+
     '''
    stop_pub : NAME STOP_PUBLISHING TO TOPIC_SERVICE
    '''
-    p[0] = (p[1], p[3])
 
     if p[1] in keys:
         if p[3] in publishing_topics.get(p[1]):
@@ -124,10 +120,12 @@ def p_stop_pub(p):
 
 
 def p_serv(p):
+    # Function that stores the service that a specified node will be providing, also stores the message
+    # type of the service
+
     '''
    serv : NAME PROVIDES_SERVICE TOPIC_SERVICE OF SERVICE_TYPE serv_type
    '''
-    p[0] = (p[1], p[3], p[6])
 
     if p[1] in keys:
         if p[1] not in services:
@@ -142,10 +140,11 @@ def p_serv(p):
 
 
 def p_stop_serv(p):
+    # Function that stops the specified node from providing the specified service
+
     '''
    stop_serv : NAME STOP_SERVICE TOPIC_SERVICE
    '''
-    p[0] = (p[1], p[3])
 
     if p[1] in keys:
         if p[3] in services.get(p[1]):
@@ -160,10 +159,12 @@ def p_stop_serv(p):
 
 
 def p_clnt(p):
+    # Function that stores the service that the specified node will be requesting and the message type of that service.
+    # It also saves the parameters that it will be sending when it requests the service
+
     '''
    clnt : NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params
    '''
-    p[0] = (p[1], p[3], p[6], p[9])
 
     if p[1] in keys:
         if p[1] not in client_requested_serv:
@@ -180,10 +181,11 @@ def p_clnt(p):
 
 
 def p_stop_clnt(p):
+    # Function that stops the specified node from requesting the specified service
+
     '''
    stop_clnt : NAME STOP_REQUEST TOPIC_SERVICE
    '''
-    p[0] = (p[1], p[3])
 
     if p[1] in keys:
         if p[3] in client_requested_serv.get(p[1]):
@@ -202,7 +204,6 @@ def p_stop_clnt(p):
 def p_params(p):
     '''
    params : NONE
-        | DEFAULT
         | list
    '''
     p[0] = p[1]
@@ -223,14 +224,18 @@ def p_term(p):
     '''
     term : INT
         | STRING_LITERAL
+        | TRUE
+        | FALSE
     '''
     p[0] = p[1]
 
 
-def p_node_mod(p):  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def p_node_mod(p):
+    # Function that stores the name of a node and stores an alias provided for that node. It also takes care
+    # of creating publisher, client, server and subscriber nodes
+
     '''
    node_mod : CREATE_NODE TOPIC_SERVICE AS NAME
-        | LOAD PATH
         | GENERATE_NODE NAME
    '''
     if str(p[1]) == 'create_node':
@@ -252,22 +257,19 @@ def p_node_mod(p):  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if isSub and (not isPub) and (not isClient) and (not isServer):
             generate_sub.generate_sub_node(subbed_topics.get(p[2]), node_names.get(p[2]), topic_type)
         elif isPub and (not isSub) and (not isClient) and (not isServer):
-            #message_name = mapped_messages.get((p[2], ))
             generate_pub.generate_pub_node(publishing_topics.get(p[2]), p[2], node_names.get(p[2]), topic_type,
                                            mapped_messages, messages)
-            # list_sub = subbed_topics.get(p[2])
-            # name = node_names.get(p[2])
-            # subs = generate_sub.create_subscription_line(list_sub, topic_type)
-            # import_var = generate_sub.create_import(list_sub, topic_type)
-            # if len(list_sub) > 1:
-            #     parameter = generate_sub.create_param(list_sub)
-            #     template = generate_sub.create_sub_template2(name, subs, parameter, import_var)
-            # else:
-            #     template = generate_sub.create_sub_template(name, subs, import_var)
-            # generate_sub.to_text(template)
-
+        elif isClient and (not isSub) and (not isPub) and (not isServer):
+            generate_client.generate_clnt_node(client_requested_serv.get(p[2]), p[2], node_names.get(p[2]),
+                                               service_type, parameter_input)
+        elif isServer and (not isSub) and (not isPub) and (not isClient):
+            generate_server.generate_serv_node(services.get(p[2]), node_names.get(p[2]), service_type)
+        else:
+            p_error(8)
 
 def p_message(p):
+    # Function that stores a message's content, message type and its alias in the system.
+
     '''
    message : CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list
    '''
@@ -290,11 +292,7 @@ def p_serv_type(p):
         | TRIGGER
         | WAYPOINTCLEAR
         | WAYPOINTPULL
-        | COMMANDINT
-        | SETCAMERAINFO
-        | GETMAP
-        | ADDDIAGNOSTICS
-        | SELFTEST
+        | WORDCOUNT
    '''
     p[0] = p[1]
 
@@ -330,21 +328,11 @@ def p_error(p):
         print("Message already exists")
     elif p == 7:
         print("Node already exists")
+    elif p == 8:
+        print("Node is not of a valid type")
     else:
         print("Syntax Error!")
 
 
 def getparser():
     return yacc.yacc()
-
-# yacc.yacc()
-
-# data = "create_node \'chatter\' as node node1"
-
-# data2 = "create_node \'talker\' as node node2"
-
-# yacc.parse(data)
-
-# yacc.parse(data2)
-
-# print(variables)

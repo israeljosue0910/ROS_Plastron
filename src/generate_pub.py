@@ -10,25 +10,27 @@ type_variables = {'Point': ['x', 'y', 'z'], 'Vector3': ['x', 'y', 'z'], 'String'
 
 
 def generate_pub_node(list_pub, node_var, node_name, topic_type, mapped_messages,
-                      messages):  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    print(mapped_messages)
+                      messages):
+    # Function that receives a set of parameters from the parser, processes them and then sends generated strings
+    # to a function that incorporates them into a ros node template. Finally it writes the template into a python file
+
     message_names = []
-    print(node_var)
     for topic in list_pub:
         temp_tuple = (node_var, topic)
-        print(temp_tuple)
         message_names.append(mapped_messages.get(temp_tuple))
-    print(message_names)
     message_str = create_message(message_names, messages)
     pub_var = create_publishing_line(list_pub, topic_type)
     publisher = create_publisher(list_pub)
     import_var = create_import(list_pub, topic_type)
     template = create_pub_template(node_name, pub_var, import_var, message_str, publisher)
-    utils.to_text(template)
+    utils.to_text(template, node_name)
 
 
 def create_pub_template(name, pub_var, import_var, message, publisher):
+    # Function that generates ros node templates
+
     pub_template = [
+        "#!/usr/bin/env python\n",
         "import rospy",
         import_var,
         "def talker():",
@@ -49,6 +51,9 @@ def create_pub_template(name, pub_var, import_var, message, publisher):
 
 
 def create_publishing_line(list_pub, topic_type):
+    # Function that generates strings containing variables initialized to the appropriate topics that the user will be
+    # publishing to
+
     pub_list = ''
     counter = 1
     pub_str = 'pub'
@@ -64,6 +69,8 @@ def create_publishing_line(list_pub, topic_type):
 
 
 def create_publisher(list_pub):
+    # Function that generates strings containing the function call to publish the user message object
+
     pub_list = ''
     counter = 1
     pub_str = 'pub'
@@ -72,7 +79,7 @@ def create_publisher(list_pub):
     for key in list_pub:
         pub_var = pub_str + str(counter)
         msg_var = msg_str + str(counter)
-        counter +=1
+        counter += 1
         pubs = '        ' + pub_var + '.' + 'publish(' + msg_var + ')\n'
         pub_list += pubs
 
@@ -80,14 +87,14 @@ def create_publisher(list_pub):
 
 
 def create_message(message_names, message_dic):
-    print(message_dic)
+    # Function that generates strings containing variables that hold the users input for the message objects
+
     message_list = ''
     msg_str = 'msg'
     counter = 1
     temp_str = ''
 
     for message in message_names:
-        print(message)
         temp_data = (message_dic.get(message))
         msg_var = msg_str + str(counter)
         temp_str = '    ' + msg_var + ' = ' + temp_data.type + '()\n'
@@ -102,21 +109,17 @@ def create_message(message_names, message_dic):
 
 
 def create_import(list_pub, topic_type):
+    # Function that generates strings containing the appropriate imports for the ros node
+
     import_start = 'from '
     import_mid = ' import '
     full_import = ''
     no_repeat = []
-    if len(list_pub) > 1:
-        for topic in list_pub:
-            type = topic_type.get(topic)
-            pack = import_pack.get(type)
-            if type not in no_repeat:
-                full_import += import_start + pack + import_mid + type + '\n'
-                no_repeat.append(type)
-
-    else:
-        type = topic_type.get(list_pub[0])
+    for topic in list_pub:
+        type = topic_type.get(topic)
         pack = import_pack.get(type)
-        full_import += import_start + pack + import_mid + type + '\n'
+        if type not in no_repeat:
+            full_import += import_start + pack + import_mid + type + '\n'
+            no_repeat.append(type)
 
     return full_import

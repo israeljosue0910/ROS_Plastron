@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import rospy
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Vector3
@@ -6,22 +8,22 @@ from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Pose2D
 
 def talker():
-    pub1 =  rospy.Publisher('hello', Point, queue_size=10)
-    pub2 =  rospy.Publisher('talker', Vector3, queue_size=10)
-    pub3 =  rospy.Publisher('talker2', String, queue_size=10)
-    pub4 =  rospy.Publisher('talker3', Quaternion, queue_size=10)
-    pub5 =  rospy.Publisher('talker4', Pose2D, queue_size=10)
+    pub1 =  rospy.Publisher('chatter', Point, queue_size=10)
+    pub2 =  rospy.Publisher('chatter1', Vector3, queue_size=10)
+    pub3 =  rospy.Publisher('chatter2', String, queue_size=10)
+    pub4 =  rospy.Publisher('chatter3', Quaternion, queue_size=10)
+    pub5 =  rospy.Publisher('chatter4', Pose2D, queue_size=10)
 
-    rospy.init_node('talker')
+    rospy.init_node('publisher')
     rate = rospy.Rate(10)
     msg1 = Point()
     msg1.x= 5
     msg1.y= 6
     msg1.z= 7
     msg2 = Vector3()
-    msg2.x= 5
-    msg2.y= 6
-    msg2.z= 7
+    msg2.x= 1
+    msg2.y= 3
+    msg2.z= 0
     msg3 = String()
     msg3.data= "hello_World"
     msg4 = Quaternion()

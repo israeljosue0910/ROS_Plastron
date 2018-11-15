@@ -4,6 +4,8 @@ from src import plastron_parser
 
 parser = plastron_parser.getparser()
 
+# Takes in User input and parses it
+
 print("ROS-Plastron\n")
 while True:
     try:

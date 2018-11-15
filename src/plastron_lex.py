@@ -1,7 +1,5 @@
 import ply.lex as lex
 
-import sys
-
 # Implementation of lexical analyzer
 
 # Create Tokens
@@ -11,10 +9,8 @@ keywords = {
     'unsubscribe': 'UNSUBSCRIBE',
     'provides_service': 'PROVIDES_SERVICE',
     'create_node': 'CREATE_NODE',
-    'load': 'LOAD',
     'to': 'TO',
     'with': 'WITH',
-    'default': 'DEFAULT',
     'input': 'INPUT',
     'from': 'FROM',
     'of': 'OF',
@@ -30,18 +26,14 @@ keywords = {
     'create_message': 'CREATE_MESSAGE',
     'none': 'NONE',
     'as': 'AS',
-    'node': 'NODE',
-
-    'generate_launch': 'GENERATE_LAUNCH',  # maybe
-    'create_custom_message': 'CREATE_CUSTOM_MESSAGE',
+    'True': 'TRUE',
+    'False': 'FALSE',
 
     'String': 'STRING',
     'Quaternion': 'QUATERNION',
     'Point': 'POINT',
     'Pose2D': 'POSE2D',
     'Vector3': 'VECTOR3',
-    'Temperature': 'TEMPERATURE',
-    'Imu': 'IMU',
     'Char': 'CHAR',
     'Int32': 'INT32',
     'Float32': 'FLOAT32',
@@ -52,37 +44,26 @@ keywords = {
     'Trigger': 'TRIGGER',
     'WaypointClear': 'WAYPOINTCLEAR',
     'WaypointPull': 'WAYPOINTPULL',
-    'CommandInt': 'COMMANDINT',
-    'SetCameraInfo': 'SETCAMERAINFO',
-    'GetMap': 'GETMAP',
-    'AddDiagnostics': 'ADDDIAGNOSTICS',
-    'SelfTest': 'SELFTEST',
+    'WordCount': 'WORDCOUNT',
 }
 
 tokens = [
              'NAME',
-             'PATH',
              'TOPIC_SERVICE',
              'COMMA',
              'INT',
              'STRING_LITERAL',
-             'NODE_VAR',
-             'CHAR_LITERAL',  # maybe
          ] + list(keywords.values())
-
-# t_NODE_VAR = r'\'[a-zA-Z][a-zA-Z0-9_]*\''
 
 t_COMMA = r'\,'
 
 t_STRING_LITERAL = r'\"([^\\\n]|(\\.))*?\"'
-# t_CHAR_LITERAL = r'\'([^\\\n]|(\\.))*?\''
 
 t_ignore_COMMENT = '//.*'
+
 t_ignore = ' \t\n'
 
 t_TOPIC_SERVICE = r'\'((/?[a-zA-Z][a-zA-Z0-9_]*)+)\''
-
-t_PATH = r'((/?[a-zA-Z][a-zA-Z0-9_]*)+)(.py)'
 
 
 def t_NAME(t):

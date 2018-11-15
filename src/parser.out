@@ -1,16 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    CHAR_LITERAL
-    CREATE_CUSTOM_MESSAGE
-    GENERATE_LAUNCH
-    IMU
-    NODE
-    NODE_VAR
-    QUATERNION
-    TEMPERATURE
-
 Grammar
 
 Rule 0     S' -> exp
@@ -33,14 +22,14 @@ Rule 16    stop_serv -> NAME STOP_SERVICE TOPIC_SERVICE
 Rule 17    clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params
 Rule 18    stop_clnt -> NAME STOP_REQUEST TOPIC_SERVICE
 Rule 19    params -> NONE
-Rule 20    params -> DEFAULT
-Rule 21    params -> list
-Rule 22    list -> term
-Rule 23    list -> list COMMA term
-Rule 24    term -> INT
-Rule 25    term -> STRING_LITERAL
-Rule 26    node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME
-Rule 27    node_mod -> LOAD PATH
+Rule 20    params -> list
+Rule 21    list -> term
+Rule 22    list -> list COMMA term
+Rule 23    term -> INT
+Rule 24    term -> STRING_LITERAL
+Rule 25    term -> TRUE
+Rule 26    term -> FALSE
+Rule 27    node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME
 Rule 28    node_mod -> GENERATE_NODE NAME
 Rule 29    message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list
 Rule 30    serv_type -> ADDTWOINTS
@@ -49,85 +38,68 @@ Rule 32    serv_type -> SETBOOL
 Rule 33    serv_type -> TRIGGER
 Rule 34    serv_type -> WAYPOINTCLEAR
 Rule 35    serv_type -> WAYPOINTPULL
-Rule 36    serv_type -> COMMANDINT
-Rule 37    serv_type -> SETCAMERAINFO
-Rule 38    serv_type -> GETMAP
-Rule 39    serv_type -> ADDDIAGNOSTICS
-Rule 40    serv_type -> SELFTEST
-Rule 41    sub_type -> STRING
-Rule 42    sub_type -> POSE
-Rule 43    sub_type -> POINT
-Rule 44    sub_type -> TWIST
-Rule 45    sub_type -> VECTOR3
-Rule 46    sub_type -> CHAR
-Rule 47    sub_type -> INT32
-Rule 48    sub_type -> FLOAT32
+Rule 36    serv_type -> WORDCOUNT
+Rule 37    sub_type -> STRING
+Rule 38    sub_type -> QUATERNION
+Rule 39    sub_type -> POINT
+Rule 40    sub_type -> POSE2D
+Rule 41    sub_type -> VECTOR3
+Rule 42    sub_type -> CHAR
+Rule 43    sub_type -> INT32
+Rule 44    sub_type -> FLOAT32
 
 Terminals, with rules where they appear
 
-ADDDIAGNOSTICS       : 39
 ADDTWOINTS           : 30
 AND                  : 29
-AS                   : 26
-CHAR                 : 46
-CHAR_LITERAL         : 
+AS                   : 27
+CHAR                 : 42
 CLIENT_REQUESTS      : 17
-COMMA                : 23
-COMMANDINT           : 36
-CREATE_CUSTOM_MESSAGE : 
+COMMA                : 22
 CREATE_MESSAGE       : 29
-CREATE_NODE          : 26
-DEFAULT              : 20
+CREATE_NODE          : 27
 EMPTY                : 31
-FLOAT32              : 48
+FALSE                : 26
+FLOAT32              : 44
 FROM                 : 12
-GENERATE_LAUNCH      : 
 GENERATE_NODE        : 28
-GETMAP               : 38
-IMU                  : 
 INPUT                : 17 29
-INT                  : 24
-INT32                : 47
-LOAD                 : 27
+INT                  : 23
+INT32                : 43
 MESSAGE_TYPE         : 11 13 29
-NAME                 : 11 12 13 13 14 15 16 17 18 26 28 29
-NODE                 : 
-NODE_VAR             : 
+NAME                 : 11 12 13 13 14 15 16 17 18 27 28 29
 NONE                 : 19
 OF                   : 11 13 15 17 29
-PATH                 : 27
-POINT                : 43
-POSE                 : 42
+POINT                : 39
+POSE2D               : 40
 PROVIDES_SERVICE     : 15
 PUBLISH              : 13
-QUATERNION           : 
-SELFTEST             : 40
+QUATERNION           : 38
 SERVICE_TYPE         : 15 17
 SETBOOL              : 32
-SETCAMERAINFO        : 37
 STOP_PUBLISHING      : 14
 STOP_REQUEST         : 18
 STOP_SERVICE         : 16
-STRING               : 41
-STRING_LITERAL       : 25
+STRING               : 37
+STRING_LITERAL       : 24
 SUBSCRIBE            : 11
-TEMPERATURE          : 
 TO                   : 11 13 14
-TOPIC_SERVICE        : 11 12 13 14 15 16 17 18 26
+TOPIC_SERVICE        : 11 12 13 14 15 16 17 18 27
 TRIGGER              : 33
-TWIST                : 44
+TRUE                 : 25
 UNSUBSCRIBE          : 12
-VECTOR3              : 45
+VECTOR3              : 41
 WAYPOINTCLEAR        : 34
 WAYPOINTPULL         : 35
 WITH                 : 17
+WORDCOUNT            : 36
 error                : 
 
 Nonterminals, with rules where they appear
 
 clnt                 : 9
 exp                  : 0
-list                 : 21 23 29
+list                 : 20 22 29
 message              : 10
 node_mod             : 1
 params               : 17
@@ -139,7 +111,7 @@ stop_pub             : 3
 stop_serv            : 6
 sub                  : 5
 sub_type             : 11 13 29
-term                 : 22 23
+term                 : 21 22
 unsub                : 2
 
 Parsing method: LALR
@@ -157,8 +129,7 @@ state 0
     (8) exp -> . stop_clnt
     (9) exp -> . clnt
     (10) exp -> . message
-    (26) node_mod -> . CREATE_NODE TOPIC_SERVICE AS NAME
-    (27) node_mod -> . LOAD PATH
+    (27) node_mod -> . CREATE_NODE TOPIC_SERVICE AS NAME
     (28) node_mod -> . GENERATE_NODE NAME
     (12) unsub -> . UNSUBSCRIBE NAME FROM TOPIC_SERVICE
     (14) stop_pub -> . NAME STOP_PUBLISHING TO TOPIC_SERVICE
@@ -171,12 +142,11 @@ state 0
     (29) message -> . CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list
 
     CREATE_NODE     shift and go to state 12
-    LOAD            shift and go to state 14
-    GENERATE_NODE   shift and go to state 15
-    UNSUBSCRIBE     shift and go to state 16
+    GENERATE_NODE   shift and go to state 14
+    UNSUBSCRIBE     shift and go to state 15
     NAME            shift and go to state 13
-    SUBSCRIBE       shift and go to state 17
-    CREATE_MESSAGE  shift and go to state 18
+    SUBSCRIBE       shift and go to state 16
+    CREATE_MESSAGE  shift and go to state 17
 
     exp                            shift and go to state 1
     node_mod                       shift and go to state 2
@@ -268,9 +238,9 @@ state 11
 
 state 12
 
-    (26) node_mod -> CREATE_NODE . TOPIC_SERVICE AS NAME
+    (27) node_mod -> CREATE_NODE . TOPIC_SERVICE AS NAME
 
-    TOPIC_SERVICE   shift and go to state 19
+    TOPIC_SERVICE   shift and go to state 18
 
 
 state 13
@@ -282,283 +252,269 @@ state 13
     (18) stop_clnt -> NAME . STOP_REQUEST TOPIC_SERVICE
     (17) clnt -> NAME . CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params
 
-    STOP_PUBLISHING shift and go to state 20
-    PUBLISH         shift and go to state 21
-    STOP_SERVICE    shift and go to state 22
-    PROVIDES_SERVICE shift and go to state 23
-    STOP_REQUEST    shift and go to state 24
-    CLIENT_REQUESTS shift and go to state 25
+    STOP_PUBLISHING shift and go to state 19
+    PUBLISH         shift and go to state 20
+    STOP_SERVICE    shift and go to state 21
+    PROVIDES_SERVICE shift and go to state 22
+    STOP_REQUEST    shift and go to state 23
+    CLIENT_REQUESTS shift and go to state 24
 
 
 state 14
 
-    (27) node_mod -> LOAD . PATH
+    (28) node_mod -> GENERATE_NODE . NAME
 
-    PATH            shift and go to state 26
+    NAME            shift and go to state 25
 
 
 state 15
 
-    (28) node_mod -> GENERATE_NODE . NAME
+    (12) unsub -> UNSUBSCRIBE . NAME FROM TOPIC_SERVICE
 
-    NAME            shift and go to state 27
+    NAME            shift and go to state 26
 
 
 state 16
 
-    (12) unsub -> UNSUBSCRIBE . NAME FROM TOPIC_SERVICE
+    (11) sub -> SUBSCRIBE . NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
 
-    NAME            shift and go to state 28
+    NAME            shift and go to state 27
 
 
 state 17
 
-    (11) sub -> SUBSCRIBE . NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
+    (29) message -> CREATE_MESSAGE . NAME OF MESSAGE_TYPE sub_type AND INPUT list
 
-    NAME            shift and go to state 29
+    NAME            shift and go to state 28
 
 
 state 18
 
-    (29) message -> CREATE_MESSAGE . NAME OF MESSAGE_TYPE sub_type AND INPUT list
+    (27) node_mod -> CREATE_NODE TOPIC_SERVICE . AS NAME
 
-    NAME            shift and go to state 30
+    AS              shift and go to state 29
 
 
 state 19
 
-    (26) node_mod -> CREATE_NODE TOPIC_SERVICE . AS NAME
+    (14) stop_pub -> NAME STOP_PUBLISHING . TO TOPIC_SERVICE
 
-    AS              shift and go to state 31
+    TO              shift and go to state 30
 
 
 state 20
 
-    (14) stop_pub -> NAME STOP_PUBLISHING . TO TOPIC_SERVICE
+    (13) pub -> NAME PUBLISH . NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
 
-    TO              shift and go to state 32
+    NAME            shift and go to state 31
 
 
 state 21
 
-    (13) pub -> NAME PUBLISH . NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
+    (16) stop_serv -> NAME STOP_SERVICE . TOPIC_SERVICE
 
-    NAME            shift and go to state 33
+    TOPIC_SERVICE   shift and go to state 32
 
 
 state 22
 
-    (16) stop_serv -> NAME STOP_SERVICE . TOPIC_SERVICE
+    (15) serv -> NAME PROVIDES_SERVICE . TOPIC_SERVICE OF SERVICE_TYPE serv_type
 
-    TOPIC_SERVICE   shift and go to state 34
+    TOPIC_SERVICE   shift and go to state 33
 
 
 state 23
 
-    (15) serv -> NAME PROVIDES_SERVICE . TOPIC_SERVICE OF SERVICE_TYPE serv_type
+    (18) stop_clnt -> NAME STOP_REQUEST . TOPIC_SERVICE
 
-    TOPIC_SERVICE   shift and go to state 35
+    TOPIC_SERVICE   shift and go to state 34
 
 
 state 24
 
-    (18) stop_clnt -> NAME STOP_REQUEST . TOPIC_SERVICE
+    (17) clnt -> NAME CLIENT_REQUESTS . TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params
 
-    TOPIC_SERVICE   shift and go to state 36
+    TOPIC_SERVICE   shift and go to state 35
 
 
 state 25
-
-    (17) clnt -> NAME CLIENT_REQUESTS . TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params
-
-    TOPIC_SERVICE   shift and go to state 37
-
-
-state 26
-
-    (27) node_mod -> LOAD PATH .
-
-    $end            reduce using rule 27 (node_mod -> LOAD PATH .)
-
-
-state 27
 
     (28) node_mod -> GENERATE_NODE NAME .
 
     $end            reduce using rule 28 (node_mod -> GENERATE_NODE NAME .)
 
 
-state 28
+state 26
 
     (12) unsub -> UNSUBSCRIBE NAME . FROM TOPIC_SERVICE
 
-    FROM            shift and go to state 38
+    FROM            shift and go to state 36
+
+
+state 27
+
+    (11) sub -> SUBSCRIBE NAME . TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
+
+    TO              shift and go to state 37
+
+
+state 28
+
+    (29) message -> CREATE_MESSAGE NAME . OF MESSAGE_TYPE sub_type AND INPUT list
+
+    OF              shift and go to state 38
 
 
 state 29
 
-    (11) sub -> SUBSCRIBE NAME . TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
+    (27) node_mod -> CREATE_NODE TOPIC_SERVICE AS . NAME
 
-    TO              shift and go to state 39
+    NAME            shift and go to state 39
 
 
 state 30
 
-    (29) message -> CREATE_MESSAGE NAME . OF MESSAGE_TYPE sub_type AND INPUT list
+    (14) stop_pub -> NAME STOP_PUBLISHING TO . TOPIC_SERVICE
 
-    OF              shift and go to state 40
+    TOPIC_SERVICE   shift and go to state 40
 
 
 state 31
 
-    (26) node_mod -> CREATE_NODE TOPIC_SERVICE AS . NAME
+    (13) pub -> NAME PUBLISH NAME . TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
 
-    NAME            shift and go to state 41
+    TO              shift and go to state 41
 
 
 state 32
-
-    (14) stop_pub -> NAME STOP_PUBLISHING TO . TOPIC_SERVICE
-
-    TOPIC_SERVICE   shift and go to state 42
-
-
-state 33
-
-    (13) pub -> NAME PUBLISH NAME . TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type
-
-    TO              shift and go to state 43
-
-
-state 34
 
     (16) stop_serv -> NAME STOP_SERVICE TOPIC_SERVICE .
 
     $end            reduce using rule 16 (stop_serv -> NAME STOP_SERVICE TOPIC_SERVICE .)
 
 
-state 35
+state 33
 
     (15) serv -> NAME PROVIDES_SERVICE TOPIC_SERVICE . OF SERVICE_TYPE serv_type
 
-    OF              shift and go to state 44
+    OF              shift and go to state 42
 
 
-state 36
+state 34
 
     (18) stop_clnt -> NAME STOP_REQUEST TOPIC_SERVICE .
 
     $end            reduce using rule 18 (stop_clnt -> NAME STOP_REQUEST TOPIC_SERVICE .)
 
 
-state 37
+state 35
 
     (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE . OF SERVICE_TYPE serv_type WITH INPUT params
 
-    OF              shift and go to state 45
+    OF              shift and go to state 43
+
+
+state 36
+
+    (12) unsub -> UNSUBSCRIBE NAME FROM . TOPIC_SERVICE
+
+    TOPIC_SERVICE   shift and go to state 44
+
+
+state 37
+
+    (11) sub -> SUBSCRIBE NAME TO . TOPIC_SERVICE OF MESSAGE_TYPE sub_type
+
+    TOPIC_SERVICE   shift and go to state 45
 
 
 state 38
 
-    (12) unsub -> UNSUBSCRIBE NAME FROM . TOPIC_SERVICE
+    (29) message -> CREATE_MESSAGE NAME OF . MESSAGE_TYPE sub_type AND INPUT list
 
-    TOPIC_SERVICE   shift and go to state 46
+    MESSAGE_TYPE    shift and go to state 46
 
 
 state 39
 
-    (11) sub -> SUBSCRIBE NAME TO . TOPIC_SERVICE OF MESSAGE_TYPE sub_type
+    (27) node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME .
 
-    TOPIC_SERVICE   shift and go to state 47
+    $end            reduce using rule 27 (node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME .)
 
 
 state 40
-
-    (29) message -> CREATE_MESSAGE NAME OF . MESSAGE_TYPE sub_type AND INPUT list
-
-    MESSAGE_TYPE    shift and go to state 48
-
-
-state 41
-
-    (26) node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME .
-
-    $end            reduce using rule 26 (node_mod -> CREATE_NODE TOPIC_SERVICE AS NAME .)
-
-
-state 42
 
     (14) stop_pub -> NAME STOP_PUBLISHING TO TOPIC_SERVICE .
 
     $end            reduce using rule 14 (stop_pub -> NAME STOP_PUBLISHING TO TOPIC_SERVICE .)
 
 
-state 43
+state 41
 
     (13) pub -> NAME PUBLISH NAME TO . TOPIC_SERVICE OF MESSAGE_TYPE sub_type
 
-    TOPIC_SERVICE   shift and go to state 49
+    TOPIC_SERVICE   shift and go to state 47
 
 
-state 44
+state 42
 
     (15) serv -> NAME PROVIDES_SERVICE TOPIC_SERVICE OF . SERVICE_TYPE serv_type
 
-    SERVICE_TYPE    shift and go to state 50
+    SERVICE_TYPE    shift and go to state 48
 
 
-state 45
+state 43
 
     (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF . SERVICE_TYPE serv_type WITH INPUT params
 
-    SERVICE_TYPE    shift and go to state 51
+    SERVICE_TYPE    shift and go to state 49
 
 
-state 46
+state 44
 
     (12) unsub -> UNSUBSCRIBE NAME FROM TOPIC_SERVICE .
 
     $end            reduce using rule 12 (unsub -> UNSUBSCRIBE NAME FROM TOPIC_SERVICE .)
 
 
-state 47
+state 45
 
     (11) sub -> SUBSCRIBE NAME TO TOPIC_SERVICE . OF MESSAGE_TYPE sub_type
 
-    OF              shift and go to state 52
+    OF              shift and go to state 50
 
 
-state 48
+state 46
 
     (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE . sub_type AND INPUT list
-    (41) sub_type -> . STRING
-    (42) sub_type -> . POSE
-    (43) sub_type -> . POINT
-    (44) sub_type -> . TWIST
-    (45) sub_type -> . VECTOR3
-    (46) sub_type -> . CHAR
-    (47) sub_type -> . INT32
-    (48) sub_type -> . FLOAT32
+    (37) sub_type -> . STRING
+    (38) sub_type -> . QUATERNION
+    (39) sub_type -> . POINT
+    (40) sub_type -> . POSE2D
+    (41) sub_type -> . VECTOR3
+    (42) sub_type -> . CHAR
+    (43) sub_type -> . INT32
+    (44) sub_type -> . FLOAT32
 
-    STRING          shift and go to state 54
-    POSE            shift and go to state 55
-    POINT           shift and go to state 56
-    TWIST           shift and go to state 57
-    VECTOR3         shift and go to state 58
-    CHAR            shift and go to state 59
-    INT32           shift and go to state 60
-    FLOAT32         shift and go to state 61
+    STRING          shift and go to state 52
+    QUATERNION      shift and go to state 53
+    POINT           shift and go to state 54
+    POSE2D          shift and go to state 55
+    VECTOR3         shift and go to state 56
+    CHAR            shift and go to state 57
+    INT32           shift and go to state 58
+    FLOAT32         shift and go to state 59
 
-    sub_type                       shift and go to state 53
+    sub_type                       shift and go to state 51
 
-state 49
+state 47
 
     (13) pub -> NAME PUBLISH NAME TO TOPIC_SERVICE . OF MESSAGE_TYPE sub_type
 
-    OF              shift and go to state 62
+    OF              shift and go to state 60
 
 
-state 50
+state 48
 
     (15) serv -> NAME PROVIDES_SERVICE TOPIC_SERVICE OF SERVICE_TYPE . serv_type
     (30) serv_type -> . ADDTWOINTS
@@ -567,27 +523,19 @@ state 50
     (33) serv_type -> . TRIGGER
     (34) serv_type -> . WAYPOINTCLEAR
     (35) serv_type -> . WAYPOINTPULL
-    (36) serv_type -> . COMMANDINT
-    (37) serv_type -> . SETCAMERAINFO
-    (38) serv_type -> . GETMAP
-    (39) serv_type -> . ADDDIAGNOSTICS
-    (40) serv_type -> . SELFTEST
+    (36) serv_type -> . WORDCOUNT
 
-    ADDTWOINTS      shift and go to state 64
-    EMPTY           shift and go to state 65
-    SETBOOL         shift and go to state 66
-    TRIGGER         shift and go to state 67
-    WAYPOINTCLEAR   shift and go to state 68
-    WAYPOINTPULL    shift and go to state 69
-    COMMANDINT      shift and go to state 70
-    SETCAMERAINFO   shift and go to state 71
-    GETMAP          shift and go to state 72
-    ADDDIAGNOSTICS  shift and go to state 73
-    SELFTEST        shift and go to state 74
+    ADDTWOINTS      shift and go to state 62
+    EMPTY           shift and go to state 63
+    SETBOOL         shift and go to state 64
+    TRIGGER         shift and go to state 65
+    WAYPOINTCLEAR   shift and go to state 66
+    WAYPOINTPULL    shift and go to state 67
+    WORDCOUNT       shift and go to state 68
 
-    serv_type                      shift and go to state 63
+    serv_type                      shift and go to state 61
 
-state 51
+state 49
 
     (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE . serv_type WITH INPUT params
     (30) serv_type -> . ADDTWOINTS
@@ -596,119 +544,111 @@ state 51
     (33) serv_type -> . TRIGGER
     (34) serv_type -> . WAYPOINTCLEAR
     (35) serv_type -> . WAYPOINTPULL
-    (36) serv_type -> . COMMANDINT
-    (37) serv_type -> . SETCAMERAINFO
-    (38) serv_type -> . GETMAP
-    (39) serv_type -> . ADDDIAGNOSTICS
-    (40) serv_type -> . SELFTEST
+    (36) serv_type -> . WORDCOUNT
 
-    ADDTWOINTS      shift and go to state 64
-    EMPTY           shift and go to state 65
-    SETBOOL         shift and go to state 66
-    TRIGGER         shift and go to state 67
-    WAYPOINTCLEAR   shift and go to state 68
-    WAYPOINTPULL    shift and go to state 69
-    COMMANDINT      shift and go to state 70
-    SETCAMERAINFO   shift and go to state 71
-    GETMAP          shift and go to state 72
-    ADDDIAGNOSTICS  shift and go to state 73
-    SELFTEST        shift and go to state 74
+    ADDTWOINTS      shift and go to state 62
+    EMPTY           shift and go to state 63
+    SETBOOL         shift and go to state 64
+    TRIGGER         shift and go to state 65
+    WAYPOINTCLEAR   shift and go to state 66
+    WAYPOINTPULL    shift and go to state 67
+    WORDCOUNT       shift and go to state 68
 
-    serv_type                      shift and go to state 75
+    serv_type                      shift and go to state 69
 
-state 52
+state 50
 
     (11) sub -> SUBSCRIBE NAME TO TOPIC_SERVICE OF . MESSAGE_TYPE sub_type
 
-    MESSAGE_TYPE    shift and go to state 76
+    MESSAGE_TYPE    shift and go to state 70
+
+
+state 51
+
+    (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type . AND INPUT list
+
+    AND             shift and go to state 71
+
+
+state 52
+
+    (37) sub_type -> STRING .
+
+    AND             reduce using rule 37 (sub_type -> STRING .)
+    $end            reduce using rule 37 (sub_type -> STRING .)
 
 
 state 53
 
-    (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type . AND INPUT list
+    (38) sub_type -> QUATERNION .
 
-    AND             shift and go to state 77
+    AND             reduce using rule 38 (sub_type -> QUATERNION .)
+    $end            reduce using rule 38 (sub_type -> QUATERNION .)
 
 
 state 54
 
-    (41) sub_type -> STRING .
+    (39) sub_type -> POINT .
 
-    AND             reduce using rule 41 (sub_type -> STRING .)
-    $end            reduce using rule 41 (sub_type -> STRING .)
+    AND             reduce using rule 39 (sub_type -> POINT .)
+    $end            reduce using rule 39 (sub_type -> POINT .)
 
 
 state 55
 
-    (42) sub_type -> POSE .
+    (40) sub_type -> POSE2D .
 
-    AND             reduce using rule 42 (sub_type -> POSE .)
-    $end            reduce using rule 42 (sub_type -> POSE .)
+    AND             reduce using rule 40 (sub_type -> POSE2D .)
+    $end            reduce using rule 40 (sub_type -> POSE2D .)
 
 
 state 56
 
-    (43) sub_type -> POINT .
+    (41) sub_type -> VECTOR3 .
 
-    AND             reduce using rule 43 (sub_type -> POINT .)
-    $end            reduce using rule 43 (sub_type -> POINT .)
+    AND             reduce using rule 41 (sub_type -> VECTOR3 .)
+    $end            reduce using rule 41 (sub_type -> VECTOR3 .)
 
 
 state 57
 
-    (44) sub_type -> TWIST .
+    (42) sub_type -> CHAR .
 
-    AND             reduce using rule 44 (sub_type -> TWIST .)
-    $end            reduce using rule 44 (sub_type -> TWIST .)
+    AND             reduce using rule 42 (sub_type -> CHAR .)
+    $end            reduce using rule 42 (sub_type -> CHAR .)
 
 
 state 58
 
-    (45) sub_type -> VECTOR3 .
+    (43) sub_type -> INT32 .
 
-    AND             reduce using rule 45 (sub_type -> VECTOR3 .)
-    $end            reduce using rule 45 (sub_type -> VECTOR3 .)
+    AND             reduce using rule 43 (sub_type -> INT32 .)
+    $end            reduce using rule 43 (sub_type -> INT32 .)
 
 
 state 59
 
-    (46) sub_type -> CHAR .
+    (44) sub_type -> FLOAT32 .
 
-    AND             reduce using rule 46 (sub_type -> CHAR .)
-    $end            reduce using rule 46 (sub_type -> CHAR .)
+    AND             reduce using rule 44 (sub_type -> FLOAT32 .)
+    $end            reduce using rule 44 (sub_type -> FLOAT32 .)
 
 
 state 60
 
-    (47) sub_type -> INT32 .
+    (13) pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF . MESSAGE_TYPE sub_type
 
-    AND             reduce using rule 47 (sub_type -> INT32 .)
-    $end            reduce using rule 47 (sub_type -> INT32 .)
+    MESSAGE_TYPE    shift and go to state 72
 
 
 state 61
-
-    (48) sub_type -> FLOAT32 .
-
-    AND             reduce using rule 48 (sub_type -> FLOAT32 .)
-    $end            reduce using rule 48 (sub_type -> FLOAT32 .)
-
-
-state 62
-
-    (13) pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF . MESSAGE_TYPE sub_type
-
-    MESSAGE_TYPE    shift and go to state 78
-
-
-state 63
 
     (15) serv -> NAME PROVIDES_SERVICE TOPIC_SERVICE OF SERVICE_TYPE serv_type .
 
     $end            reduce using rule 15 (serv -> NAME PROVIDES_SERVICE TOPIC_SERVICE OF SERVICE_TYPE serv_type .)
 
 
-state 64
+state 62
 
     (30) serv_type -> ADDTWOINTS .
 
@@ -716,7 +656,7 @@ state 64
     WITH            reduce using rule 30 (serv_type -> ADDTWOINTS .)
 
 
-state 65
+state 63
 
     (31) serv_type -> EMPTY .
 
@@ -724,7 +664,7 @@ state 65
     WITH            reduce using rule 31 (serv_type -> EMPTY .)
 
 
-state 66
+state 64
 
     (32) serv_type -> SETBOOL .
 
@@ -732,7 +672,7 @@ state 66
     WITH            reduce using rule 32 (serv_type -> SETBOOL .)
 
 
-state 67
+state 65
 
     (33) serv_type -> TRIGGER .
 
@@ -740,7 +680,7 @@ state 67
     WITH            reduce using rule 33 (serv_type -> TRIGGER .)
 
 
-state 68
+state 66
 
     (34) serv_type -> WAYPOINTCLEAR .
 
@@ -748,7 +688,7 @@ state 68
     WITH            reduce using rule 34 (serv_type -> WAYPOINTCLEAR .)
 
 
-state 69
+state 67
 
     (35) serv_type -> WAYPOINTPULL .
 
@@ -756,239 +696,226 @@ state 69
     WITH            reduce using rule 35 (serv_type -> WAYPOINTPULL .)
 
 
+state 68
+
+    (36) serv_type -> WORDCOUNT .
+
+    $end            reduce using rule 36 (serv_type -> WORDCOUNT .)
+    WITH            reduce using rule 36 (serv_type -> WORDCOUNT .)
+
+
+state 69
+
+    (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type . WITH INPUT params
+
+    WITH            shift and go to state 73
+
+
 state 70
 
-    (36) serv_type -> COMMANDINT .
+    (11) sub -> SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE . sub_type
+    (37) sub_type -> . STRING
+    (38) sub_type -> . QUATERNION
+    (39) sub_type -> . POINT
+    (40) sub_type -> . POSE2D
+    (41) sub_type -> . VECTOR3
+    (42) sub_type -> . CHAR
+    (43) sub_type -> . INT32
+    (44) sub_type -> . FLOAT32
 
-    $end            reduce using rule 36 (serv_type -> COMMANDINT .)
-    WITH            reduce using rule 36 (serv_type -> COMMANDINT .)
+    STRING          shift and go to state 52
+    QUATERNION      shift and go to state 53
+    POINT           shift and go to state 54
+    POSE2D          shift and go to state 55
+    VECTOR3         shift and go to state 56
+    CHAR            shift and go to state 57
+    INT32           shift and go to state 58
+    FLOAT32         shift and go to state 59
 
+    sub_type                       shift and go to state 74
 
 state 71
 
-    (37) serv_type -> SETCAMERAINFO .
+    (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND . INPUT list
 
-    $end            reduce using rule 37 (serv_type -> SETCAMERAINFO .)
-    WITH            reduce using rule 37 (serv_type -> SETCAMERAINFO .)
+    INPUT           shift and go to state 75
 
 
 state 72
 
-    (38) serv_type -> GETMAP .
+    (13) pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE . sub_type
+    (37) sub_type -> . STRING
+    (38) sub_type -> . QUATERNION
+    (39) sub_type -> . POINT
+    (40) sub_type -> . POSE2D
+    (41) sub_type -> . VECTOR3
+    (42) sub_type -> . CHAR
+    (43) sub_type -> . INT32
+    (44) sub_type -> . FLOAT32
 
-    $end            reduce using rule 38 (serv_type -> GETMAP .)
-    WITH            reduce using rule 38 (serv_type -> GETMAP .)
+    STRING          shift and go to state 52
+    QUATERNION      shift and go to state 53
+    POINT           shift and go to state 54
+    POSE2D          shift and go to state 55
+    VECTOR3         shift and go to state 56
+    CHAR            shift and go to state 57
+    INT32           shift and go to state 58
+    FLOAT32         shift and go to state 59
 
+    sub_type                       shift and go to state 76
 
 state 73
 
-    (39) serv_type -> ADDDIAGNOSTICS .
+    (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH . INPUT params
 
-    $end            reduce using rule 39 (serv_type -> ADDDIAGNOSTICS .)
-    WITH            reduce using rule 39 (serv_type -> ADDDIAGNOSTICS .)
+    INPUT           shift and go to state 77
 
 
 state 74
-
-    (40) serv_type -> SELFTEST .
-
-    $end            reduce using rule 40 (serv_type -> SELFTEST .)
-    WITH            reduce using rule 40 (serv_type -> SELFTEST .)
-
-
-state 75
-
-    (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type . WITH INPUT params
-
-    WITH            shift and go to state 79
-
-
-state 76
-
-    (11) sub -> SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE . sub_type
-    (41) sub_type -> . STRING
-    (42) sub_type -> . POSE
-    (43) sub_type -> . POINT
-    (44) sub_type -> . TWIST
-    (45) sub_type -> . VECTOR3
-    (46) sub_type -> . CHAR
-    (47) sub_type -> . INT32
-    (48) sub_type -> . FLOAT32
-
-    STRING          shift and go to state 54
-    POSE            shift and go to state 55
-    POINT           shift and go to state 56
-    TWIST           shift and go to state 57
-    VECTOR3         shift and go to state 58
-    CHAR            shift and go to state 59
-    INT32           shift and go to state 60
-    FLOAT32         shift and go to state 61
-
-    sub_type                       shift and go to state 80
-
-state 77
-
-    (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND . INPUT list
-
-    INPUT           shift and go to state 81
-
-
-state 78
-
-    (13) pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE . sub_type
-    (41) sub_type -> . STRING
-    (42) sub_type -> . POSE
-    (43) sub_type -> . POINT
-    (44) sub_type -> . TWIST
-    (45) sub_type -> . VECTOR3
-    (46) sub_type -> . CHAR
-    (47) sub_type -> . INT32
-    (48) sub_type -> . FLOAT32
-
-    STRING          shift and go to state 54
-    POSE            shift and go to state 55
-    POINT           shift and go to state 56
-    TWIST           shift and go to state 57
-    VECTOR3         shift and go to state 58
-    CHAR            shift and go to state 59
-    INT32           shift and go to state 60
-    FLOAT32         shift and go to state 61
-
-    sub_type                       shift and go to state 82
-
-state 79
-
-    (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH . INPUT params
-
-    INPUT           shift and go to state 83
-
-
-state 80
 
     (11) sub -> SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type .
 
     $end            reduce using rule 11 (sub -> SUBSCRIBE NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type .)
 
 
-state 81
+state 75
 
     (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT . list
-    (22) list -> . term
-    (23) list -> . list COMMA term
-    (24) term -> . INT
-    (25) term -> . STRING_LITERAL
+    (21) list -> . term
+    (22) list -> . list COMMA term
+    (23) term -> . INT
+    (24) term -> . STRING_LITERAL
+    (25) term -> . TRUE
+    (26) term -> . FALSE
 
-    INT             shift and go to state 86
-    STRING_LITERAL  shift and go to state 87
+    INT             shift and go to state 80
+    STRING_LITERAL  shift and go to state 81
+    TRUE            shift and go to state 82
+    FALSE           shift and go to state 83
 
-    list                           shift and go to state 84
-    term                           shift and go to state 85
+    list                           shift and go to state 78
+    term                           shift and go to state 79
 
-state 82
+state 76
 
     (13) pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type .
 
     $end            reduce using rule 13 (pub -> NAME PUBLISH NAME TO TOPIC_SERVICE OF MESSAGE_TYPE sub_type .)
 
 
-state 83
+state 77
 
     (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT . params
     (19) params -> . NONE
-    (20) params -> . DEFAULT
-    (21) params -> . list
-    (22) list -> . term
-    (23) list -> . list COMMA term
-    (24) term -> . INT
-    (25) term -> . STRING_LITERAL
+    (20) params -> . list
+    (21) list -> . term
+    (22) list -> . list COMMA term
+    (23) term -> . INT
+    (24) term -> . STRING_LITERAL
+    (25) term -> . TRUE
+    (26) term -> . FALSE
 
-    NONE            shift and go to state 89
-    DEFAULT         shift and go to state 90
-    INT             shift and go to state 86
-    STRING_LITERAL  shift and go to state 87
+    NONE            shift and go to state 85
+    INT             shift and go to state 80
+    STRING_LITERAL  shift and go to state 81
+    TRUE            shift and go to state 82
+    FALSE           shift and go to state 83
 
-    params                         shift and go to state 88
-    list                           shift and go to state 91
-    term                           shift and go to state 85
+    params                         shift and go to state 84
+    list                           shift and go to state 86
+    term                           shift and go to state 79
 
-state 84
+state 78
 
     (29) message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list .
-    (23) list -> list . COMMA term
+    (22) list -> list . COMMA term
 
     $end            reduce using rule 29 (message -> CREATE_MESSAGE NAME OF MESSAGE_TYPE sub_type AND INPUT list .)
-    COMMA           shift and go to state 92
+    COMMA           shift and go to state 87
 
 
-state 85
+state 79
 
-    (22) list -> term .
+    (21) list -> term .
 
-    COMMA           reduce using rule 22 (list -> term .)
-    $end            reduce using rule 22 (list -> term .)
-
-
-state 86
-
-    (24) term -> INT .
-
-    COMMA           reduce using rule 24 (term -> INT .)
-    $end            reduce using rule 24 (term -> INT .)
+    COMMA           reduce using rule 21 (list -> term .)
+    $end            reduce using rule 21 (list -> term .)
 
 
-state 87
+state 80
 
-    (25) term -> STRING_LITERAL .
+    (23) term -> INT .
 
-    COMMA           reduce using rule 25 (term -> STRING_LITERAL .)
-    $end            reduce using rule 25 (term -> STRING_LITERAL .)
+    COMMA           reduce using rule 23 (term -> INT .)
+    $end            reduce using rule 23 (term -> INT .)
 
 
-state 88
+state 81
+
+    (24) term -> STRING_LITERAL .
+
+    COMMA           reduce using rule 24 (term -> STRING_LITERAL .)
+    $end            reduce using rule 24 (term -> STRING_LITERAL .)
+
+
+state 82
+
+    (25) term -> TRUE .
+
+    COMMA           reduce using rule 25 (term -> TRUE .)
+    $end            reduce using rule 25 (term -> TRUE .)
+
+
+state 83
+
+    (26) term -> FALSE .
+
+    COMMA           reduce using rule 26 (term -> FALSE .)
+    $end            reduce using rule 26 (term -> FALSE .)
+
+
+state 84
 
     (17) clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params .
 
     $end            reduce using rule 17 (clnt -> NAME CLIENT_REQUESTS TOPIC_SERVICE OF SERVICE_TYPE serv_type WITH INPUT params .)
 
 
-state 89
+state 85
 
     (19) params -> NONE .
 
     $end            reduce using rule 19 (params -> NONE .)
 
 
-state 90
+state 86
 
-    (20) params -> DEFAULT .
+    (20) params -> list .
+    (22) list -> list . COMMA term
 
-    $end            reduce using rule 20 (params -> DEFAULT .)
-
-
-state 91
-
-    (21) params -> list .
-    (23) list -> list . COMMA term
-
-    $end            reduce using rule 21 (params -> list .)
-    COMMA           shift and go to state 92
+    $end            reduce using rule 20 (params -> list .)
+    COMMA           shift and go to state 87
 
 
-state 92
+state 87
 
-    (23) list -> list COMMA . term
-    (24) term -> . INT
-    (25) term -> . STRING_LITERAL
+    (22) list -> list COMMA . term
+    (23) term -> . INT
+    (24) term -> . STRING_LITERAL
+    (25) term -> . TRUE
+    (26) term -> . FALSE
 
-    INT             shift and go to state 86
-    STRING_LITERAL  shift and go to state 87
+    INT             shift and go to state 80
+    STRING_LITERAL  shift and go to state 81
+    TRUE            shift and go to state 82
+    FALSE           shift and go to state 83
 
-    term                           shift and go to state 93
+    term                           shift and go to state 88
 
-state 93
+state 88
 
-    (23) list -> list COMMA term .
+    (22) list -> list COMMA term .
 
-    COMMA           reduce using rule 23 (list -> list COMMA term .)
-    $end            reduce using rule 23 (list -> list COMMA term .)
+    COMMA           reduce using rule 22 (list -> list COMMA term .)
+    $end            reduce using rule 22 (list -> list COMMA term .)
 
