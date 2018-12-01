@@ -13,7 +13,7 @@ def generate_serv_node(list_serv, node_name, service_type):
     handler_var = create_handler_func(list_serv)
     import_var = create_import(list_serv, service_type)
     template = create_serv_template(node_name, import_var, handler_var, serv_var)
-    utils.to_text(template, node_name)
+    utils.to_text(template, node_name+"_server")
 
 
 def create_service_line(list_serv, service_type):

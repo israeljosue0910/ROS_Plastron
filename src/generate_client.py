@@ -17,7 +17,7 @@ def generate_clnt_node(list_serv, node_var, node_name, service_type, parameters)
     import_var = create_import(list_serv, service_type)
     wait_serv = create_wait_service(list_serv)
     template = create_client_template(node_name, import_var, wait_serv, service_var, input_var, call_var)
-    utils.to_text(template, node_name)
+    utils.to_text(template, node_name+"_client")
 
 
 def create_client_template(name, import_var, wait_service, service_var, input_var, call_var):

@@ -11,12 +11,15 @@ def generate_sub_node(list_sub, name, topic_type):
 
     subs = create_subscription_line(list_sub, topic_type)
     import_var = create_import(list_sub, topic_type)
+    node = ''
     if len(list_sub) > 1:
         parameter = create_param(list_sub)
         template = create_sub_template2(name, subs, parameter, import_var)
+        node = name + "_sub2"
     else:
         template = create_sub_template(name, subs, import_var)
-    utils.to_text(template,name)
+        node = name + "_sub1"
+    utils.to_text(template, node)
 
 
 def create_sub_template(name, sub, import_var):

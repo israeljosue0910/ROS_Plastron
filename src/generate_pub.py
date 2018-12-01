@@ -23,7 +23,7 @@ def generate_pub_node(list_pub, node_var, node_name, topic_type, mapped_messages
     publisher = create_publisher(list_pub)
     import_var = create_import(list_pub, topic_type)
     template = create_pub_template(node_name, pub_var, import_var, message_str, publisher)
-    utils.to_text(template, node_name)
+    utils.to_text(template, node_name+"_pub")
 
 
 def create_pub_template(name, pub_var, import_var, message, publisher):
