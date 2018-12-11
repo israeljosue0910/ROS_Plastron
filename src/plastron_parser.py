@@ -2,7 +2,7 @@ import ply.yacc as yacc
 
 from src import plastron_lex
 from src import message_struct
-from src import generate_sub, generate_pub, generate_client, generate_server
+from src import generate_sub, generate_pub, generate_client, generate_server, node_caster
 
 
 tokens = plastron_lex.tokens
@@ -231,12 +231,14 @@ def p_term(p):
 
 
 def p_node_mod(p):
-    # Function that stores the name of a node and stores an alias provided for that node. It also takes care
-    # of creating publisher, client, server and subscriber nodes
+    # Function that stores the name of a node and stores an alias provided for that node. It takes care
+    # of creating publisher, client, server and subscriber nodes. It also takes care of loading clients, servers,
+    # publishers and subscribers into the system.
 
     '''
    node_mod : CREATE_NODE TOPIC_SERVICE AS NAME
         | GENERATE_NODE NAME
+        | LOAD NAME AS NAME
    '''
     if str(p[1]) == 'create_node':
         if str(p[2]).__contains__('/'):
@@ -266,6 +268,79 @@ def p_node_mod(p):
             generate_server.generate_serv_node(services.get(p[2]), node_names.get(p[2]), service_type)
         else:
             p_error(8)
+
+    elif str(p[1]) == 'load':
+        filename = p[2]
+        filename += '.py'
+        var_name = p[4]
+        lines = node_caster.toLines(filename)
+        node_name = node_caster.getName(lines, filename)
+        if var_name not in keys:
+            node_names[var_name] = node_name
+            keys.append(var_name)
+        else:
+            p_error(7)
+
+        if node_caster.isSubscriber1(filename) or node_caster.isSubscriber2(filename):
+            topic_dic = node_caster.getTopicNameAndType(lines, filename)
+            topic_list = []
+            for key in topic_dic:
+                topic_list.append(key)
+            subbed_topics[var_name] = topic_list
+            topic_type.update(topic_dic)
+
+        if node_caster.isServer(filename):
+            serv_dic = node_caster.getServiceNameAndType(lines, filename)
+            serv_list = []
+            for key in serv_dic:
+                serv_list.append(key)
+            services[var_name] = serv_list
+            service_type.update(serv_dic)
+
+        if node_caster.isClient(filename):
+            client_dic = node_caster.getServiceNameAndType(lines, filename)
+            client_list = []
+            for key in client_dic:
+                client_list.append(key)
+            client_requested_serv[var_name] = client_list
+            service_type.update(client_dic)
+            params = node_caster.getServiceParameters(lines, filename)
+            for key in params:
+                temp_key = (var_name, key)
+                parameter_input[temp_key] = params.get(key)
+
+        if node_caster.isPublisher(filename):
+            topic_dic = node_caster.getTopicNameAndType(lines, filename)
+            topic_list = []
+            for key in topic_dic:
+                topic_list.append(key)
+                publishing_topics[var_name] = topic_list
+            topic_type.update(topic_dic)
+            msg_obj = node_caster.getMessageObjects(lines, filename)
+            counter = 1
+            message_var = "msg" + str(counter)
+            for key in msg_obj:
+
+                msg = message_struct.Messages(key, msg_obj.get(key))
+                messages[message_var] = msg
+                keys.append(message_var)
+                temp_topic = None
+                for topic in topic_type:
+                    if topic_type.get(topic) == key:
+                        temp_topic = topic
+
+                temp_key = (var_name, temp_topic)
+                mapped_messages[temp_key] = message_var
+                counter += 1
+                message_var = "msg" + str(counter)
+
+
+
+
+
+
+
+
 
 def p_message(p):
     # Function that stores a message's content, message type and its alias in the system.

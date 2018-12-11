@@ -28,6 +28,7 @@ keywords = {
     'as': 'AS',
     'True': 'TRUE',
     'False': 'FALSE',
+    'load': 'LOAD',
 
     'String': 'STRING',
     'Quaternion': 'QUATERNION',
