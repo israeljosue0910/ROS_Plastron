@@ -61,7 +61,7 @@ generate_node node5
 ### **Video Tutorial**
 ---
 <div align="center">
-  <iframe width="560" height="315" src="https://youtu.be/mOqia0bzEIw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/mOqia0bzEIw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 
 ### **Install**
