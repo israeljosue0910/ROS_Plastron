@@ -67,3 +67,15 @@ INSERT LINK
 
 ### **Install**
 ---
+#### Dependencies
+The project utilizes Python 3.4 with the PLY package.
+
+#### Instructions
+*Download <a href="https://github.com/israeljosue0910/ROS_Plastron/archive/master.zip"> ROS_Plastron </a>
+*Install Python 3.4 and the PLY package.
+*Run ROS_Plastron/src/main.py
+
+### **Final Report**
+---
+View <a href="https://github.com/israeljosue0910/ROS_Plastron/archive/master.zip"> Final Report </a>
+
