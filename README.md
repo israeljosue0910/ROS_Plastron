@@ -76,5 +76,5 @@ The project utilizes Python 3.4 or higher with the PLY package.
 
 ### **Final Report**
 ---
-View <a href="https://github.com/israeljosue0910/ROS_Plastron/archive/master.zip"> Final Report </a>
+View <a href="https://github.com/israeljosue0910/ROS_Plastron/blob/master/ROS-Plastron%20Final%20Report.pdf"> Final Report </a>
 
