@@ -1,6 +1,3 @@
-## ROS_Plastron
-
----
 
 ### **Robotics Operating System**
 ---
@@ -12,5 +9,61 @@ ROS_Plastron is a language that aims to make the Robotic Operating System more a
 
 ### **Language Features**
 ---
-The Node Creation feature allows users to generatee four type of node templates: Subscribers, Publishers, Clients and Servers. The Existing Node Manipulation feature allows users to load existing node files into the system, perform changes to it and then generate the node file. In the future ROS_Plastron will support other features like: Custom Message Creation and URDF Files Creation.
+ROS_Plastron currently supports two features: Node Creation and Existing Node Manipulation. The Node Creation feature allows users to generate four types of node templates: Subscribers, Publishers, Clients and Servers. The Existing Node Manipulation feature allows users to load existing node files into the system, perform changes to it (i.e unsubscribing a node from a topic and subscribing it to another topic) and then generate the node file. In the future ROS_Plastron will support other features like: Custom Message Creation and URDF Files Creation.
 
+### **Sample Codes**
+---
+#### Example 1: Creating a Publisher Node
+```
+create_node 'publisher' as node1
+create_message msg1 of message_type Point and input 5,6,7
+create_message msg2 of message_type Vector3 and input 1,3,0
+create_message msg3 of message_type String and input "hello_World"
+create_message msg4 of message_type Quaternion and input 8,9,10,11
+create_message msg5 of message_type Pose2D and input 1,2,80
+node1 publish msg1 to 'chatter' of message_type Point
+node1 publish msg2 to 'chatter1' of message_type Vector3
+node1 publish msg3 to 'chatter2' of message_type String
+node1 publish msg4 to 'chatter3' of message_type Quaternion
+node1 publish msg5 to 'chatter4' of message_type Pose2D
+generate_node node1
+```
+#### Example 2: Creating a Subscriber Node
+```
+create_node 'subscriber' as node2
+subscribe node2 to 'chatter' of message_type String
+generate_node node2
+```
+#### Example 3: Creating a Client Node
+```
+create_node 'client' as node3
+node3 client_requests 'add_two_ints' of service_type AddTwoInts with input 5,6
+node3 client_requests 'waypoint_clear' of service_type WaypointClear with input none
+node3 client_requests 'set_bool' of service_type SetBool with input True
+generate_node node3
+```
+#### Example 4: Creating a Server Node
+```
+create_node 'server' as node4
+node4 provides_service 'add_two_ints' of service_type AddTwoInts
+node4 provides_service 'waypoint_clear' of service_type WaypointClear
+node4 provides_service 'set_bool' of service_type SetBool
+generate_node node4
+```
+#### Example 5: Loading and modifying a node
+```
+load subscriber_sub1 as node5
+unsubscribe node5 from 'chatter'
+subscribe node5 to 'topic_added_after_load' of message_type String
+generate_node node5
+```
+
+### **Video Tutorial**
+---
+INSERT LINK
+<div align="center">
+  <iframe width="560" height="315" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+### **Install**
+---
