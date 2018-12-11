@@ -62,18 +62,18 @@ generate_node node5
 ---
 INSERT LINK
 <div align="center">
-  <iframe width="560" height="315" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube.com/watch?v=mOqia0bzEIw&t=13s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 ### **Install**
 ---
 #### Dependencies
-The project utilizes Python 3.4 with the PLY package.
+The project utilizes Python 3.4 or higher with the PLY package.
 
 #### Instructions
-*Download <a href="https://github.com/israeljosue0910/ROS_Plastron/archive/master.zip"> ROS_Plastron </a>
-*Install Python 3.4 and the PLY package.
-*Run ROS_Plastron/src/main.py
+* Download <a href="https://github.com/israeljosue0910/ROS_Plastron/archive/master.zip"> ROS_Plastron </a>
+* Install Python 3.4 and the PLY package.
+* Run ROS_Plastron/src/main.py
 
 ### **Final Report**
 ---
